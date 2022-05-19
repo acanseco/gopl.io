@@ -17,17 +17,19 @@ func main() {
 			url = fmt.Sprintf("%s%s", url_prefix, url)
 		}
 		resp, err := http.Get(url)
+
+		fmt.Printf("HTTP status code: %s\n", resp.Status)
+
 		if err != nil {
 			fmt.Fprint(os.Stderr, "fetch: %v\n", err)
 			os.Exit(1)
 		}
 		dst := os.Stdout
-		b, err := io.Copy(dst, resp.Body)
+		_, err = io.Copy(dst, resp.Body)
 		resp.Body.Close()
 		if err != nil {
 			fmt.Fprint(os.Stderr, "fetch: reading %s: %v\n", url, err)
 			os.Exit(1)
 		}
-		fmt.Printf("%s", b)
 	}
 }
