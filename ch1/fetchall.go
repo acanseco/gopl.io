@@ -16,10 +16,15 @@ func main() {
 	for _, url := range os.Args[1:] {
 		go fetch(url, ch) // start a goroutine
 	}
-	for range os.Args[1:] {
-		fmt.Println(<-ch) // receive from channel ch
+	f, err := os.Create("./bin/fetchall.txt")
+	if err != nil {
+		fmt.Println("while writing fetchall.txt, %v", err)
 	}
-	fmt.Printf("%.2fs elapsed\n", time.Since(start).Seconds())
+	defer f.Close()
+	for range os.Args[1:] {
+		fmt.Fprintln(f, <-ch) // receive from channel ch
+	}
+	fmt.Fprintln(f, fmt.Sprintf("%.2fs elapsed\n", time.Since(start).Seconds()))
 }
 
 func fetch(url string, ch chan<- string) {
