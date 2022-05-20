@@ -8,7 +8,6 @@ import (
 	"io"
 	"math"
 	"math/rand"
-	"os"
 )
 
 var palette = []color.Color{
@@ -23,10 +22,6 @@ var palette = []color.Color{
 }
 
 const greenIndex = 1
-
-func main() {
-	lissajous(os.Stdout)
-}
 
 func lissajous(out io.Writer) {
 	const (
